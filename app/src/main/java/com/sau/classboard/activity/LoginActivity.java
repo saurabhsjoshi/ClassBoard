@@ -209,9 +209,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                //startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                lblAppName.setVisibility(View.GONE);
-                collapseView(toolbar);
+                startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                //lblAppName.setVisibility(View.GONE);
+                //collapseView(toolbar);
             }
         }, Constants.SPLASH_TIME_OUT);
     }

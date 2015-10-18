@@ -6,4 +6,6 @@ package com.sau.classboard.utility;
 public class Constants {
 
     public final static int SPLASH_TIME_OUT = 1000;
+
+    public final static int REVEAL_TIME = 100;
 }

@@ -19,4 +19,8 @@
     <string name="lbl_signup_title">Sign Up</string>
     <string name="radio_label_student">Student</string>
     <string name="radio_label_teacher">Teacher</string>
+
+    <!-- New Board Activity -->
+    <string name="chk_private">Private Board</string>
+    <string name="txt_description">Description</string>
 </resources>
