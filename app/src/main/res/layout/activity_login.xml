@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity"
+    tools:ignore="MissingPrefix">
+
+    <RelativeLayout
+        android:id="@+id/layout_holder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <!-- Bottom button bar -->
+        <RelativeLayout
+            android:id="@+id/buttonBarLayout"
+            style="@android:style/ButtonBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorButtonBarBackground">
+
+            <Button
+                android:id="@+id/loginButton"
+                style="?attr/toolbarNavigationButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="14dp"
+                android:layout_marginRight="14dp"
+                android:padding="12dp"
+                android:text="@string/button_next"
+                android:textAllCaps="true"
+                android:textColor="@drawable/login_button_color"
+                android:textSize="16sp"
+                fontPath="fonts/Roboto-Regular.ttf" />
+
+            <Button
+                android:id="@+id/exitButton"
+                style="?attr/toolbarNavigationButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="14dp"
+                android:layout_marginStart="14dp"
+                android:padding="12dp"
+                android:text="@string/button_exit"
+                android:textAllCaps="true"
+                android:textColor="@drawable/login_button_color"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                fontPath="fonts/Roboto-Regular.ttf" />
+
+        </RelativeLayout>
+
+        <!-- Toolbar -->
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbarLogin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:background="?attr/colorPrimary"
+            android:gravity="center"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/img_splash_icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp"
+                    android:layout_margin="15dp"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/splash" />
+
+                <TextView
+                    android:id="@+id/loginSupportText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/img_splash_icon"
+                    android:layout_marginTop="25dp"
+                    android:text="@string/app_name"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="24sp"
+                    fontPath="fonts/Roboto-Medium.ttf"/>
+            </RelativeLayout>
+            </android.support.v7.widget.Toolbar>
+
+        <!-- ProgressBar -->
+        <RelativeLayout
+            android:id="@+id/shadowProgressLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbarLogin">
+
+            <!--To overlay the progress bar over the shadow of the toolbar-->
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@drawable/toolbar_drop_shadow" />
+
+            <ProgressBar
+                android:id="@+id/progressBarLogin"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-6dp"
+                android:indeterminate="true"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <!-- Login Holder -->
+        <RelativeLayout
+            android:id="@+id/layout_login_holder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/shadowProgressLayout">
+
+            <LinearLayout
+                android:id="@+id/layout_credentials"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin">
+
+                <TextView
+                    android:id="@+id/lbl_login_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lbl_login_title"
+                    android:textSize="20sp"
+                    android:textColor="@android:color/black"
+                    android:layout_marginTop="10dp"
+                    fontPath = "fonts/Roboto-Regular.ttf"/>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/txt_email_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="19dp">
+
+                    <EditText
+                        android:id="@+id/txt_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/txt_username_hint"
+                        android:inputType="textEmailAddress"
+                        android:singleLine="true" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/txt_password_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="19dp">
+
+                    <EditText
+                        android:id="@+id/txt_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/txt_password_hint"
+                        android:inputType="textPassword"
+                        android:singleLine="true" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/lbl_new_account"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:text="@string/lbl_new_account"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="17sp"
+                    fontPath="fonts/Roboto-Light.ttf"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id = "@+id/layout_user_type"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/lbl_type_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lbl_type_title"
+                    android:textSize="20sp"
+                    android:textColor="@android:color/black"
+                    android:layout_marginTop="10dp"
+                    fontPath = "fonts/Roboto-Regular.ttf"/>
+
+                <RadioGroup
+                    android:id="@+id/layout_radio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.AppCompatRadioButton
+                        android:id="@+id/radio_student"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:layout_marginTop="5dp"
+                        android:checked="false"
+                        android:text="@string/radio_label_student"
+                        android:textSize="18sp" />
+
+                    <android.support.v7.widget.AppCompatRadioButton
+                        android:id="@+id/radio_teacher"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginTop="15dp"
+                        android:checked="false"
+                        android:text="@string/radio_label_teacher"
+                        android:textSize="18sp" />
+                </RadioGroup>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

@@ -5,4 +5,18 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+
+    <!-- Login Activity -->
+    <string name="button_next">Next&#160;&#160;〉</string>
+    <string name="button_login">Login&#160;&#160;〉</string>
+    <string name="button_exit">〈</string>
+    <string name="txt_username_hint">Email</string>
+    <string name="txt_password_hint">Password</string>
+    <string name="lbl_new_account">Or create new account</string>
+    <string name="lbl_type_title">Who are you?</string>
+    <string name="lbl_login_title">Sign In</string>
+    <string name="lbl_signup_title">Sign Up</string>
+    <string name="radio_label_student">Student</string>
+    <string name="radio_label_teacher">Teacher</string>
 </resources>
