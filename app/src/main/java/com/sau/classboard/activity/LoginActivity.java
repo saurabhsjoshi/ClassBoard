@@ -32,6 +32,7 @@ import com.magnet.mmx.client.api.MMX;
 import com.magnet.mmx.client.api.MMXUser;
 import com.sau.classboard.Manifest;
 import com.sau.classboard.R;
+import com.sau.classboard.model.UserData;
 import com.sau.classboard.utility.Constants;
 
 /**
@@ -368,7 +369,13 @@ public class LoginActivity extends AppCompatActivity implements
 
 
     private void logInUser() {
-        MMX.login(username, password.getBytes(), new MMX.OnFinishedListener<Void>() {
+        if(state == STATES.LOGIN_SCREEN){
+            username = UserData.getCurrentUser(this).username;
+            password = UserData.getCurrentUser(this).password;
+        }
+
+        MMX.login(username,
+                password.getBytes(), new MMX.OnFinishedListener<Void>() {
             public void onSuccess(Void aVoid) {
                 MMX.start();
                 runOnUiThread(new Runnable() {

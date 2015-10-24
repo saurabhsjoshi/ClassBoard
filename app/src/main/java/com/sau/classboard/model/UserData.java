@@ -38,7 +38,8 @@ public class UserData extends RushObject{
         firstName = prefs.getString("FIRST_NAME","");
         lastName = prefs.getString("LAST_NAME", "");
         email = prefs.getString("EMAIL","");
-        password = prefs.getString("PASSWORD", password);
+        password = prefs.getString("PASSWORD", "");
+        username = prefs.getString("USERNAME", "");
 
     }
 

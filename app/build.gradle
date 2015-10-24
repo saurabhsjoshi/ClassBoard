@@ -37,6 +37,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-base:8.1.0'
     compile 'com.google.android.gms:play-services-gcm:8.1.0'
     compile 'co.uk.rushorm:rushandroid:1.1.11'
+    compile 'de.hdodenhof:circleimageview:2.0.0'
     compile ("com.magnet.mmx:magnet-mmx-client-android:1.9.1@aar") {
         transitive=true
     }
