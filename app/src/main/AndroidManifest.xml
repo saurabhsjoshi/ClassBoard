@@ -2,9 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sau.classboard" >
 
+    <permission android:name="com.magnet.demo.mmx.starter.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="com.magnet.demo.mmx.starter.permission.C2D_MESSAGE" />
+    <permission android:name="android.permission.READ_PHONE_STATE"/>
+
     <application
         android:name=".MainApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -29,6 +34,39 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver android:name=".broadcast.MessageBroadcastReceiver">
+            <intent-filter>
+                <action android:name="NEW_MESSAGE" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="com.magnet.mmx.client.MMXGcmBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="com.magnet.demo.mmx.starter" />
+            </intent-filter>
+        </receiver>
+
+
+        <!-- Updating this will cause a database upgrade -->
+        <meta-data android:name="Rush_db_version" android:value="1" />
+
+        <!-- Database name -->
+        <meta-data android:name="Rush_db_name" android:value="rush.db" />
+
+        <!-- Setting this to true will cause a migration to happen every launch,
+        this is very handy during development although could cause data loss -->
+        <meta-data android:name="Rush_debug" android:value="false" />
+
+        <!-- Setting this to true mean that tables will only be created of classes that
+        extend RushObject and are annotated with @RushTableAnnotation -->
+        <meta-data android:name="Rush_requires_table_annotation" android:value="false" />
+
+        <!-- Turning on logging can be done by settings this value to true -->
+        <meta-data android:name="Rush_log" android:value="false" />
+
     </application>
 
 </manifest>
