@@ -133,12 +133,15 @@ public class NewBoardClass extends AppCompatActivity {
         final BoardData boardData = new BoardData();
         boardData.owner = UserData.getCurrentUser(this);
         boardData.isSelfOwner = true;
-        boardData.title = txt_title.getText().toString();
+        boardData.title = txt_title.getText().toString().replace(" ", "_");
         boardData.code = txt_code.getText().toString();
         boardData.isPrivate = chk_private.isChecked();
         boardData.description = txt_desc.getText().toString();
 
-        MMXChannel.create(boardData.title, boardData.code, !boardData.isPrivate, new MMXChannel.OnFinishedListener<MMXChannel>() {
+        MMXChannel.create(
+                boardData.title,
+                boardData.code,
+                !boardData.isPrivate, new MMXChannel.OnFinishedListener<MMXChannel>() {
             @Override
             public void onSuccess(MMXChannel mmxChannel) {
                 //Save channel on device
@@ -154,7 +157,6 @@ public class NewBoardClass extends AppCompatActivity {
                 Toast.makeText(NewBoardClass.this, "An error occurred! Please try again.", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     @Override

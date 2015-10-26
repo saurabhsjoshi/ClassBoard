@@ -18,6 +18,7 @@ import android.view.View;
 
 import com.sau.classboard.R;
 import com.sau.classboard.fragment.BoardFragment;
+import com.sau.classboard.model.UserData;
 import com.sau.classboard.utility.Constants;
 
 public class HomeActivity extends AppCompatActivity
@@ -35,13 +36,15 @@ public class HomeActivity extends AppCompatActivity
         activity = this;
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
+        if(UserData.getCurrentUser(this).type == UserData.STUDENT){
+            fab.setImageResource(R.drawable.ic_search_white_24dp);
+        }
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
                     startActivity(new Intent(activity, NewBoardClass.class));
                 }
-
             }
         });
 
@@ -118,6 +121,5 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.nav_about) {
 
         }
-
     }
 }

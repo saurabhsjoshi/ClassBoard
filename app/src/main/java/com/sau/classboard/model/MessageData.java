@@ -3,13 +3,23 @@ package com.sau.classboard.model;
 import com.google.gson.Gson;
 
 import co.uk.rushorm.core.RushObject;
+import co.uk.rushorm.core.annotations.RushIgnore;
 
 /**
  * Created by saurabh on 2015-10-22.
  */
 public class MessageData extends RushObject {
 
+    @RushIgnore
+    public static int BOARD_MESSAGE = 0,
+            PRIVATE_MESSAGE = 1, PRIVATE_INVITE = 2;
+
     public String message;
+
+    public boolean isRead = false;
+
+    public int messageType;
+
     public UserData sender;
 
     public MessageData(){}

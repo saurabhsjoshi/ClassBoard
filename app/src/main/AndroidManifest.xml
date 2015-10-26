@@ -2,10 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sau.classboard" >
 
-    <permission android:name="com.magnet.demo.mmx.starter.permission.C2D_MESSAGE" android:protectionLevel="signature" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="com.magnet.demo.mmx.starter.permission.C2D_MESSAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <permission android:name="android.permission.READ_PHONE_STATE"/>
+
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <permission android:name="com.sau.classboard.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="com.sau.classboard.permission.C2D_MESSAGE" />
 
     <application
         android:name=".MainApplication"
@@ -13,7 +17,12 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
         <activity
             android:name=".activity.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -25,7 +34,7 @@
             android:name=".activity.LoginActivity"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
-            android:noHistory="true"
+            android:noHistory="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"
             android:label="@string/app_name">
@@ -35,17 +44,17 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".broadcast.MessageBroadcastReceiver">
+        <receiver android:name="com.magnet.mmx.client.MMXGcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
-                <action android:name="NEW_MESSAGE" />
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="com.sau.classboard" />
             </intent-filter>
         </receiver>
 
-        <receiver android:name="com.magnet.mmx.client.MMXGcmBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
+        <receiver android:name=".broadcast.MessageBroadcastReceiver" android:exported="false">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-
-                <category android:name="com.magnet.demo.mmx.starter" />
+                <action android:name="NEW_MESSAGE" />
             </intent-filter>
         </receiver>
 

@@ -18,13 +18,17 @@ public class UserData extends RushObject{
     public int type;
 
     @RushIgnore
+    public static final int STUDENT = 0, TEACHER = 1;
+
+    @RushIgnore
     public String password;
 
 
     @RushIgnore
-    public static UserData currentUser = null;
+    private static UserData currentUser = null;
 
     public static UserData getCurrentUser(Context context){
+
         if(currentUser == null)
             currentUser = new UserData(context);
 
@@ -40,7 +44,8 @@ public class UserData extends RushObject{
         email = prefs.getString("EMAIL","");
         password = prefs.getString("PASSWORD", "");
         username = prefs.getString("USERNAME", "");
-
     }
+
+
 
 }

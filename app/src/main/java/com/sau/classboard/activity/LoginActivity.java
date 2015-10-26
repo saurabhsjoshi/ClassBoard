@@ -81,6 +81,8 @@ public class LoginActivity extends AppCompatActivity implements
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
+    private boolean shouldAnimate = true, isLogin = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,40 +108,45 @@ public class LoginActivity extends AppCompatActivity implements
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if(prefs.getBoolean("IS_LOGGED_IN", false)){
+        if(prefs.getBoolean("IS_LOGGED_IN", false)) {
+            shouldAnimate = false;
+            postMInit();
             logInUser();
         }
+        else{
+            lytCredentials = (LinearLayout) findViewById(R.id.layout_credentials);
+            lytUserType = (LinearLayout) findViewById(R.id.layout_user_type);
+            lytName = (LinearLayout) findViewById(R.id.layout_name);
+            lytGroup = (RadioGroup) findViewById(R.id.layout_radio);
 
-        lytCredentials = (LinearLayout) findViewById(R.id.layout_credentials);
-        lytUserType = (LinearLayout) findViewById(R.id.layout_user_type);
-        lytName = (LinearLayout) findViewById(R.id.layout_name);
-        lytGroup = (RadioGroup) findViewById(R.id.layout_radio);
+            loginButton =  (Button) findViewById(R.id.loginButton);
+            exitButton = (Button) findViewById(R.id.exitButton);
 
-        loginButton =  (Button) findViewById(R.id.loginButton);
-        exitButton = (Button) findViewById(R.id.exitButton);
+            loginButton.setOnClickListener(this);
+            exitButton.setOnClickListener(this);
+            lytGroup.setOnCheckedChangeListener(this);
 
-        loginButton.setOnClickListener(this);
-        exitButton.setOnClickListener(this);
-        lytGroup.setOnCheckedChangeListener(this);
+            txtEmail = (EditText) findViewById(R.id.txt_email);
+            txtPassword = (EditText) findViewById(R.id.txt_password);
+            txtFirstName = (EditText) findViewById(R.id.txt_first_name);
+            txtLastName = (EditText) findViewById(R.id.txt_last_name);
 
-        txtEmail = (EditText) findViewById(R.id.txt_email);
-        txtPassword = (EditText) findViewById(R.id.txt_password);
-        txtFirstName = (EditText) findViewById(R.id.txt_first_name);
-        txtLastName = (EditText) findViewById(R.id.txt_last_name);
+            txtEmailHolder = (TextInputLayout) findViewById(R.id.txt_email_holder);
+            txtPasswordHolder = (TextInputLayout) findViewById(R.id.txt_password_holder);
+            txtFirstNameHolder = (TextInputLayout) findViewById(R.id.txt_first_name_holder);
+            txtLastNameHolder = (TextInputLayout) findViewById(R.id.txt_last_name_holder);
 
-        txtEmailHolder = (TextInputLayout) findViewById(R.id.txt_email_holder);
-        txtPasswordHolder = (TextInputLayout) findViewById(R.id.txt_password_holder);
-        txtFirstNameHolder = (TextInputLayout) findViewById(R.id.txt_first_name_holder);
-        txtLastNameHolder = (TextInputLayout) findViewById(R.id.txt_last_name_holder);
+            lblNewAccount = (TextView) findViewById(R.id.lbl_new_account);
+            lblNewAccount.setOnClickListener(this);
 
-        lblNewAccount = (TextView) findViewById(R.id.lbl_new_account);
-        lblNewAccount.setOnClickListener(this);
+            lblLoginTitle = (TextView) findViewById(R.id.lbl_login_title);
 
-        lblLoginTitle = (TextView) findViewById(R.id.lbl_login_title);
+            lblAppName = (TextView) findViewById(R.id.loginSupportText);
 
-        lblAppName = (TextView) findViewById(R.id.loginSupportText);
+            progressBar = (ProgressBar) findViewById(R.id.progressBarLogin);
+        }
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBarLogin);
+
     }
 
     @Override
@@ -159,9 +166,10 @@ public class LoginActivity extends AppCompatActivity implements
             case R.id.loginButton:
                 //Login button on login screen
                 if(state == STATES.LOGIN_SCREEN && checkInput()){
+                    isLogin = true;
                     initValues();
-                    //startActivity(new Intent(this, HomeActivity.class));
-                    logInUser();
+                    state = STATES.NAME_SCREEN;
+                    switchToNameSelect();
                 }
 
                 //Next on Email and password screen to Name screen
@@ -184,7 +192,18 @@ public class LoginActivity extends AppCompatActivity implements
                 //Sign Up button on type screen
                 else if(state == STATES.TYPE_SELECT){
                     loginButton.setEnabled(false);
+                    if(isLogin){
+                        saveCredentials();
+                        if(Build.VERSION.SDK_INT >= 23){
+                            getPermissions();
+                        }
+                        else{
+                            logInUser();
+                        }
+                    }
+                    else{
                     signUpUser();
+                    }
                 }
 
                 break;
@@ -292,7 +311,10 @@ public class LoginActivity extends AppCompatActivity implements
         lytName.animate();
         lytName.setVisibility(View.GONE);
 
-        loginButton.setText(getString(R.string.button_login_sign_up));
+        if(isLogin)
+            loginButton.setText("Login");
+        else
+            loginButton.setText(getString(R.string.button_login_sign_up));
         exitButton.setEnabled(false);
         if(!lytGroup.isSelected())
             loginButton.setEnabled(false);
@@ -313,11 +335,7 @@ public class LoginActivity extends AppCompatActivity implements
         loginButton.setText(getString(R.string.button_logging_in));
         lytUserType.setVisibility(View.GONE);
 
-        String [] split = email.split("@");
-        String domain = split[split.length-1];
-
-        //Create a username with a domain
-        username = domain + "@" + email;
+        username = email;
 
         if(Build.VERSION.SDK_INT >= 23){
             getPermissions();
@@ -328,9 +346,11 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     private void postMInit(){
-        com.magnet.mmx.client.common.Log.setLoggable(null, com.magnet.mmx.client.common.Log.VERBOSE);
-        MMX.init(this, R.raw.classboard);
-        MMX.registerWakeupBroadcast(new Intent("NEW_MESSAGE"));
+        if(Build.VERSION.SDK_INT >= 23) {
+            com.magnet.mmx.client.common.Log.setLoggable(null, com.magnet.mmx.client.common.Log.VERBOSE);
+            MMX.init(this, R.raw.classboard);
+            MMX.registerWakeupBroadcast(new Intent("NEW_MESSAGE"));
+        }
     }
 
     private void preMSignUp(){
@@ -346,13 +366,13 @@ public class LoginActivity extends AppCompatActivity implements
                     }
                 });
             }
+
             @Override
             public void onFailure(MMXUser.FailureCode failureCode, Throwable throwable) {
-                if(throwable != null){
+                if (throwable != null) {
                     Toast.makeText(context, "Could not sign up." + throwable.getMessage(), Toast.LENGTH_LONG).show();
                     throwable.printStackTrace();
-                }
-                else{
+                } else {
                     Toast.makeText(context, "Could not sign up. Please choose different username", Toast.LENGTH_LONG).show();
                 }
 
@@ -376,30 +396,31 @@ public class LoginActivity extends AppCompatActivity implements
 
         MMX.login(username,
                 password.getBytes(), new MMX.OnFinishedListener<Void>() {
-            public void onSuccess(Void aVoid) {
-                MMX.start();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        prefs.edit().putBoolean("IS_LOGGED_IN", true).commit();
-                        startActivity(new Intent(context, HomeActivity.class));
+                    public void onSuccess(Void aVoid) {
+                        MMX.start();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                prefs.edit().putBoolean("IS_LOGGED_IN", true).commit();
+                                startActivity(new Intent(context, HomeActivity.class)
+                                        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+                            }
+                        });
+
+                    }
+
+                    public void onFailure(MMX.FailureCode failureCode, final Throwable throwable) {
+                        if (MMX.FailureCode.SERVER_AUTH_FAILED.equals(failureCode)) {
+                            Toast.makeText(context, "Login failed." + throwable.getMessage(), Toast.LENGTH_LONG).show();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ((LoginActivity) context).recreate();
+                                }
+                            });
+                        }
                     }
                 });
-
-            }
-
-            public void onFailure(MMX.FailureCode failureCode, final Throwable throwable) {
-                if (MMX.FailureCode.SERVER_AUTH_FAILED.equals(failureCode)) {
-                    Toast.makeText(context, "Login failed." + throwable.getMessage(), Toast.LENGTH_LONG).show();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            ((LoginActivity) context).recreate();
-                        }
-                    });
-                }
-            }
-        });
     }
 
     private void saveCredentials(){
@@ -417,28 +438,27 @@ public class LoginActivity extends AppCompatActivity implements
         email = txtEmail.getText().toString();
         password = txtPassword.getText().toString();
 
-        String [] split = email.split("@");
-        String domain = split[split.length-1];
-
         //Create a username with a domain
-        username = domain + "@" + email;
+        username = email;
     }
 
     @Override
     protected void onPostResume() {
         super.onPostResume();
+        if(shouldAnimate){
+            toolbar.setContentInsetsAbsolute(0, 0);
+            toolbar.requestLayout();
 
-        toolbar.setContentInsetsAbsolute(0, 0);
-        toolbar.requestLayout();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
+                    lblAppName.setVisibility(View.GONE);
+                    collapseView(toolbar);
+                }
+            }, Constants.SPLASH_TIME_OUT);
+        }
 
-                lblAppName.setVisibility(View.GONE);
-                collapseView(toolbar);
-            }
-        }, Constants.SPLASH_TIME_OUT);
     }
 
     private void collapseView(final View view) {
@@ -497,8 +517,10 @@ public class LoginActivity extends AppCompatActivity implements
         //Permission is already granted
         else{
             postMInit();
-            if(state != STATES.LOGIN_SCREEN)
+            if(!isLogin)
                 preMSignUp();
+            else
+                logInUser();
         }
     }
 
@@ -507,7 +529,10 @@ public class LoginActivity extends AppCompatActivity implements
                                            int[] grantResults){
         if(requestCode == REQUEST_CODE_ASK_PERMISSIONS){
             if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                signUpUser();
+                if(isLogin)
+                    logInUser();
+                else
+                    signUpUser();
             }
         }
     }
